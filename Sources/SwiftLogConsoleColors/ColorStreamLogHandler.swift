@@ -108,7 +108,7 @@ public struct ColorStreamLogHandler: LogHandler {
         let icon = logIconType.toIcon(logLevel: level)
 
         var stream = self.stream
-        stream.write("\(self.timestamp()) \(icon) \(level) \(self.label) :\(prettyMetadata.map { " \($0)" } ?? "") \(message)\n")
+        stream.write("\(self.timestamp()) \(icon) \(self.label):\(prettyMetadata.map { "\($0)" } ?? "") \(message)\n")
     }
 
     private func prettify(_ metadata: Logger.Metadata) -> String? {
@@ -121,7 +121,7 @@ public struct ColorStreamLogHandler: LogHandler {
         var buffer = [Int8](repeating: 0, count: 255)
         var timestamp = time(nil)
         let localTime = localtime(&timestamp)
-        strftime(&buffer, buffer.count, "%Y-%m-%dT%H:%M:%S%z", localTime)
+        strftime(&buffer, buffer.count, "%y-%m-%d|%H:%M:%S", localTime)
         return buffer.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: CChar.self) {
                 String(cString: $0.baseAddress!)
